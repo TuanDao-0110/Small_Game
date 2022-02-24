@@ -2,7 +2,6 @@ import React, { useContext } from 'react'
 import { giamTienCuoc, themTienCuoc } from '../Provider/Type'
 
 export default function QuanCuoc({ quanCuoc, dispatch }) {
-
     const cuoc = (a, maQuanCuoc) => {
         if (a === '-') {
             let action = {

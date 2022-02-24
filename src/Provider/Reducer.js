@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useCallback, useReducer } from "react";
 import { act } from "react-dom/test-utils";
 import { giamTienCuoc, themTienCuoc, xocDia } from "./Type";
 
@@ -27,10 +27,11 @@ const initialState = {
 
 
 let GameBauCuaReducer = (state, action) => {
+    // eslint-disable-next-line default-case
     switch (action.type) {
         case giamTienCuoc: {
 
-            let index = state.danhSachCuoc.findIndex(item => item.ma === action.maQuanCuoc);
+            let index = state.danhSachCuoc.findIndex(item => item.ma === action.maQuanCuoc.ma);
             if (state.danhSachCuoc[index].diemCuoc > 0) {
                 state.danhSachCuoc[index].diemCuoc -= tienDat
                 state.tongDiem += tienDat
@@ -38,21 +39,13 @@ let GameBauCuaReducer = (state, action) => {
             return { ...state };
         }
         case themTienCuoc: {
-
             let index = state.danhSachCuoc.findIndex(item => item.ma === action.maQuanCuoc.ma);
-            const danhSachCuocUpdate = [...state.danhSachCuoc];
             if (state.tongDiem > 0) {
-
-                danhSachCuocUpdate[index].diemCuoc += 100;
-                state.tongDiem -= tienDat;
-                state.danhSachCuoc = danhSachCuocUpdate;
-                console.log(state.danhSachCuoc)
+                state.danhSachCuoc[index].diemCuoc +=  tienDat
+                return { ...state, tongDiem: state.tongDiem - tienDat, }
             }
-            return { ...state, }
+            return { ...state }
         }
-
-
-
         case xocDia: {
             // let thucHienXucXac = () => {
             //     return new Promise((res, err) => {
@@ -92,9 +85,8 @@ let GameBauCuaReducer = (state, action) => {
 
             return { ...state, number: state.number++ }
         }
-        default: return { ...state }
+        default: return state;
     }
-
 }
 export default function Context(props) {
     let [GameReducer, dispatch] = useReducer(GameBauCuaReducer, initialState);
@@ -106,6 +98,8 @@ export default function Context(props) {
     }
     return (
         <storeContext.Provider value={[GameReducer, dispatch]}>
+
+            {console.log('store', GameReducer.danhSachCuoc[0].diemCuoc)}
             {props.children}
         </storeContext.Provider>
     )
