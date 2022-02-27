@@ -5,11 +5,8 @@ import Context from './Provider/Reducer';
 function App() {
   return (
     <div className="">
-      <Context>
-
         <BaiTapGameBauCua></BaiTapGameBauCua>
-
-      </Context>
+     
       {/* <ContextProvider></ContextProvider> */}
     </div >
   );

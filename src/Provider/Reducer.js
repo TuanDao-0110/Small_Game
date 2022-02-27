@@ -1,6 +1,6 @@
 import React, { useCallback, useReducer } from "react";
 import { act } from "react-dom/test-utils";
-import { giamTienCuoc, themTienCuoc, xocDia } from "./Type";
+import { giamTienCuoc, refesh, themTienCuoc, xocDia } from "./Type";
 
 export const storeContext = React.createContext()
 const tienDat = 100;
@@ -16,7 +16,6 @@ const initialState = {
         { ma: 'cua', hinhAnh: './img/BaiTapGameBauCua/cua.png', diemCuoc: 0 },
         { ma: 'tom', hinhAnh: './img/BaiTapGameBauCua/tom.png', diemCuoc: 0 }
     ],
-    number: 0,
     tongDiem: 1000,
     mangXucXac: [
         { ma: 'nai', hinhAnh: './img/BaiTapGameBauCua/nai.png' },
@@ -39,53 +38,46 @@ let GameBauCuaReducer = (state, action) => {
             return { ...state };
         }
         case themTienCuoc: {
-            let index = state.danhSachCuoc.findIndex(item => item.ma === action.maQuanCuoc.ma);
+            const tempState = { ...state }
+            let index = tempState.danhSachCuoc.findIndex(item => item.ma === action.maQuanCuoc.ma);
             if (state.tongDiem > 0) {
-                state.danhSachCuoc[index].diemCuoc +=  tienDat
-                return { ...state, tongDiem: state.tongDiem - tienDat, }
+                tempState.tongDiem -= tienDat
+                tempState.danhSachCuoc[index].diemCuoc += tienDat
+                state = { ...tempState }
             }
             return { ...state }
         }
         case xocDia: {
-            // let thucHienXucXac = () => {
-            //     return new Promise((res, err) => {
-            //         let tempDanhSachCuoc = [...state.danhSachCuoc];
-            //         let tempDanhSachXucXac = [...state.mangXucXac]
-
-            //         tempDanhSachXucXac.map((item, index) => {
-            //             item.hinhAnh = tempDanhSachCuoc[Math.floor(Math.random() * 6)].hinhAnh
-            //             state = { ...state, mangXucXac: tempDanhSachCuoc }
-
-            //             res([...state.mangXucXac])
-            //         })
-            //     }).then(res => console.log(res))
-            // }
-            // thucHienXucXac()
             const mangXucSacNgauNhien = [];
             for (let i = 0; i < 3; i++) {
-
                 mangXucSacNgauNhien.push(state.danhSachCuoc[Math.floor(Math.random() * 6)])
             }
-
             const tempDanhSachCuoc = [...state.danhSachCuoc]
             for (let item of tempDanhSachCuoc) {
-                for (let xucXac of mangXucSacNgauNhien) {
-                    if (item.ma === xucXac.ma) {
-                        console.log(item.ma)
-                        console.log('them diem')
-                        state.tongDiem += item.diemCuoc * 2
+                let count = 0
+                mangXucSacNgauNhien.forEach((xucXac, index) => {
+                    if (xucXac.ma === item.ma && item.diemCuoc > 0) {
+                        count++
                     }
-                }
-                item.diemCuoc = 0
-            }
 
+                })
+                if (count > 0) {
+                    state.tongDiem += item.diemCuoc * (count + 1)
+                    item.diemCuoc = 0
+                } else {
+                    item.diemCuoc = 0
+
+                }
+            }
             return { ...state, mangXucXac: mangXucSacNgauNhien, danhSachCuoc: tempDanhSachCuoc }
         }
-        case 'add': {
 
-            return { ...state, number: state.number++ }
+        case refesh: {
+            state.tongDiem = 1000
+
+            return { ...state }
         }
-        default: return state;
+        default: return { ...state };
     }
 }
 export default function Context(props) {
@@ -99,7 +91,6 @@ export default function Context(props) {
     return (
         <storeContext.Provider value={[GameReducer, dispatch]}>
 
-            {console.log('store', GameReducer.danhSachCuoc[0].diemCuoc)}
             {props.children}
         </storeContext.Provider>
     )

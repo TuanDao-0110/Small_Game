@@ -1,9 +1,9 @@
 import React, { useContext } from 'react'
-
+import { refesh } from '../Provider/Type'
 export default function DiemCuoc({ diem, dispatch }) {
-    const add = () => {
+    const choiLai = () => {
         let action = {
-            type: 'add'
+            type: refesh
         }
         return dispatch(action)
     }
@@ -14,7 +14,9 @@ export default function DiemCuoc({ diem, dispatch }) {
                 <span style={{ fontSize: 20, borderRadius: '5%' }} className='p-3 text-white bg-danger'>tien thuong:<span style={{ color: 'yellow' }}>{diem.toLocaleString()}$</span></span>
             </div>
             <div className='text-center'>
-                <button style={{ fontSize: 10, borderRadius: '5%', border: 'none' }} className='btn btn-success'>choi lai</button>
+                <button onClick={() => {
+                    choiLai()
+                }} style={{ fontSize: 10, borderRadius: '5%', border: 'none' }} className='btn btn-success'>choi lai</button>
             </div>
         </div>
     )
