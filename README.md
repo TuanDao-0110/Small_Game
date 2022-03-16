@@ -1,5 +1,8 @@
 The Game is Vietnamese tradition game ! 
 
+Project using Context_Provider on React ,
+
+
 1st. we choose animal  we want and bet money on that 
 
 2nd. run for dice circling
