@@ -7,3 +7,6 @@ The Game is Vietnamese tradition game !
 3rd. dice give result 
 
 4th. if the result have number we choosed ==> we got the money back doudle as we betted.
+
+
+![loading](https://user-images.githubusercontent.com/75282610/158703100-19661eb2-6a00-468b-bfd5-860bf2c8f3cb.gif)
