@@ -15,7 +15,7 @@ Project using Context_Provider on React ,
 sorry for only vietnamese version, i will update english version soon.
 
 
-small-game.pages.dev
+(https://d5fd58b5.small-game.pages.dev)
 
 
 ![loading](https://user-images.githubusercontent.com/75282610/158703100-19661eb2-6a00-468b-bfd5-860bf2c8f3cb.gif)
